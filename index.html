@@ -6,65 +6,219 @@
   <title>Breathing Timer App</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Arial, sans-serif;
       text-align: center;
-      margin: 20px;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      margin-top: 32px;
+      color: #2d3a4b;
+      letter-spacing: 1px;
+      font-size: 2.2rem;
+      font-weight: 700;
+      text-shadow: 0 2px 8px #fff8;
+    }
+
+    .breath-card {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 4px 24px 0 #b0c4de44;
+      padding: 28px 20px 20px 20px;
+      margin: 24px 0 0 0;
+      max-width: 370px;
+      width: 90vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     label {
       display: block;
-      margin: 10px 0;
+      margin: 12px 0 4px 0;
+      color: #2d3a4b;
+      font-size: 1.05rem;
+      font-weight: 500;
+      text-align: left;
     }
 
-    input {
-      width: 200px;
-      padding: 5px;
+    input[type="number"] {
+      width: 100%;
+      max-width: 180px;
+      padding: 8px 10px;
+      border: 1px solid #b0c4de;
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-bottom: 6px;
+      background: #f7fafc;
+      box-sizing: border-box;
+    }
+
+    input[type="radio"] {
+      accent-color: #4f8cff;
+      margin-right: 6px;
+    }
+
+    .mode-select {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      margin-bottom: 18px;
     }
 
     button {
-      padding: 10px;
-      margin-top: 20px;
-      font-size: 16px;
+      padding: 12px 32px;
+      margin-top: 24px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(90deg, #4f8cff 0%, #38b6ff 100%);
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px #4f8cff33;
       cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    button:hover {
+      background: linear-gradient(90deg, #38b6ff 0%, #4f8cff 100%);
+      transform: translateY(-2px) scale(1.03);
     }
 
     #timerLabels {
-      margin-top: 20px;
+      margin-top: 24px;
+      background: #f7fafc;
+      border-radius: 12px;
+      box-shadow: 0 1px 4px #b0c4de22;
+      padding: 18px 0 10px 0;
+      width: 100%;
+      max-width: 320px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #timerLabels p {
+      margin: 8px 0;
+      font-size: 1.1rem;
+      color: #2d3a4b;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.3rem;
+        margin-top: 18px;
+      }
+      .breath-card {
+        padding: 16px 4vw 12px 4vw;
+        max-width: 98vw;
+      }
+      #timerLabels {
+        max-width: 98vw;
+        padding: 10px 0 6px 0;
+      }
+      button {
+        padding: 10px 10vw;
+        font-size: 1rem;
+      }
     }
   </style>
 </head>
 <body>
+
   <h1>Breathing Timer App</h1>
-  
-  <label for="cycles">Number of Cycles:</label>
-  <input type="number" id="cycles" />
 
-  <label for="inhale">Inhale Duration (seconds):</label>
-  <input type="number" id="inhale" />
+  <div class="breath-card">
+    <div class="mode-select">
+      <label>
+        <input type="radio" name="mode" id="modeBox" checked onchange="toggleMode()"> Box Breathing
+      </label>
+      <label>
+        <input type="radio" name="mode" id="modeThirumalar" onchange="toggleMode()"> Thirumalar Breathing
+      </label>
+    </div>
 
-  <label for="hold">Hold Duration (seconds):</label>
-  <input type="number" id="hold" />
+    <div id="boxSection">
+      <label for="cycles">Number of Cycles:</label>
+      <input type="number" id="cycles" placeholder="e.g. 5" />
 
-  <label for="exhale">Exhale Duration (seconds):</label>
-  <input type="number" id="exhale" />
+      <label for="inhale">Inhale Duration (seconds):</label>
+      <input type="number" id="inhale" placeholder="e.g. 4" />
 
-  <div id="timerLabels">
-    <p id="currentPhase">Current Phase:</p>
-    <p id="remainingTime">Remaining Time:</p>
-    <p id="totalTime">Total Time:</p>
+      <label for="hold">Hold Duration (seconds):</label>
+      <input type="number" id="hold" placeholder="e.g. 4" />
+
+      <label for="exhale">Exhale Duration (seconds):</label>
+      <input type="number" id="exhale" placeholder="e.g. 4" />
+    </div>
+
+    <div id="thirumalarSection" style="display:none;">
+      <label for="cyclesThiru">Number of Cycles:</label>
+      <input type="number" id="cyclesThiru" placeholder="e.g. 5" />
+
+      <label for="inhaleThiru">Inhale Duration (seconds):</label>
+      <input type="number" id="inhaleThiru" value="4" min="1" onchange="updateThiruTimes()" placeholder="e.g. 4" />
+
+      <label>Hold Duration (seconds): <span id="holdThiruLabel">16</span></label>
+      <label>Exhale Duration (seconds): <span id="exhaleThiruLabel">8</span></label>
+    </div>
+
+    <div id="timerLabels">
+      <p id="currentPhase">Current Phase:</p>
+      <p id="remainingTime">Remaining Time:</p>
+      <p id="totalTime">Total Time:</p>
+    </div>
+
+    <button onclick="startTimer()">Start Breathing</button>
   </div>
 
-  <button onclick="startTimer()">Start Breathing</button>
-
   <script>
+
+    // Elements for Box Breathing
     let totalCyclesInput = document.getElementById('cycles');
     let inhaleInput = document.getElementById('inhale');
     let holdInput = document.getElementById('hold');
     let exhaleInput = document.getElementById('exhale');
 
+    // Elements for Thirumalar Breathing
+    let totalCyclesThiruInput = document.getElementById('cyclesThiru');
+    let inhaleThiruInput = document.getElementById('inhaleThiru');
+    let holdThiruLabel = document.getElementById('holdThiruLabel');
+    let exhaleThiruLabel = document.getElementById('exhaleThiruLabel');
+
+    // Mode toggle
+    let modeBox = document.getElementById('modeBox');
+    let modeThirumalar = document.getElementById('modeThirumalar');
+    let boxSection = document.getElementById('boxSection');
+    let thirumalarSection = document.getElementById('thirumalarSection');
+
     let currentPhaseLabel = document.getElementById('currentPhase');
     let remainingTimeLabel = document.getElementById('remainingTime');
     let totalTimeLabel = document.getElementById('totalTime');
+
+    function toggleMode() {
+      if (modeBox.checked) {
+        boxSection.style.display = '';
+        thirumalarSection.style.display = 'none';
+      } else {
+        boxSection.style.display = 'none';
+        thirumalarSection.style.display = '';
+        updateThiruTimes();
+      }
+    }
+
+    function updateThiruTimes() {
+      let inhale = parseInt(inhaleThiruInput.value) || 1;
+      let hold = inhale * 4;
+      let exhale = inhale * 2;
+      holdThiruLabel.textContent = hold;
+      exhaleThiruLabel.textContent = exhale;
+    }
 
     function playSound(filename) {
       let audio = new Audio(filename);
@@ -77,19 +231,19 @@
       totalTimeLabel.textContent = "Total Time: " + totalMinutes.toFixed(2) + " minutes";
     }
 
-    function updateCountdownTimer(remainingTime, cycleCount, totalCycles, inhaleDuration, holdDuration, exhaleDuration, phaseCount, totalStartTime) {
+    function updateCountdownTimer(remainingTime, cycleCount, totalCycles, inhaleDuration, holdDuration, exhaleDuration, phaseCount, totalStartTime, isThirumular) {
       if (remainingTime > 0) {
-        updateTimerLabels(getCurrentPhase(phaseCount), remainingTime, calculateTotalMinutes(totalStartTime));
+        updateTimerLabels(getCurrentPhase(phaseCount, isThirumular), remainingTime, calculateTotalMinutes(totalStartTime));
         setTimeout(function() {
-          updateCountdownTimer(remainingTime - 1, cycleCount, totalCycles, inhaleDuration, holdDuration, exhaleDuration, phaseCount, totalStartTime);
+          updateCountdownTimer(remainingTime - 1, cycleCount, totalCycles, inhaleDuration, holdDuration, exhaleDuration, phaseCount, totalStartTime, isThirumular);
         }, 1000);
       } else {
-        if (phaseCount % 4 === 0) {
-          playSound(getSoundFilename(phaseCount));
-        }
-        let nextPhaseCount = (phaseCount + 1) % 4;
+        // For Thirumular, 3 phases: 0=Inhale, 1=Hold, 2=Exhale
+        // For Box, 4 phases: 0=Inhale, 1=Hold, 2=Exhale, 3=Hold
+        let phaseMod = isThirumular ? 3 : 4;
+        let nextPhaseCount = (phaseCount + 1) % phaseMod;
         let nextCycleCount = cycleCount + (nextPhaseCount === 0 ? 1 : 0);
-        timer(totalCycles, inhaleDuration, holdDuration, exhaleDuration, nextCycleCount, nextPhaseCount, totalStartTime);
+        timer(totalCycles, inhaleDuration, holdDuration, exhaleDuration, nextCycleCount, nextPhaseCount, totalStartTime, isThirumular);
       }
     }
 
@@ -97,29 +251,39 @@
       return (Date.now() - totalStartTime) / (60 * 1000);
     }
 
-    function getCurrentPhase(phaseCount) {
-      let phases = ["Inhale", "Hold", "Exhale", "Hold"];
-      return phases[phaseCount % 4];
+    function getCurrentPhase(phaseCount, isThirumular) {
+      if (isThirumular) {
+        let phases = ["Inhale", "Hold", "Exhale"];
+        return phases[phaseCount % 3];
+      } else {
+        let phases = ["Inhale", "Hold", "Exhale", "Hold"];
+        return phases[phaseCount % 4];
+      }
     }
 
-    function timer(totalCycles, inhaleDuration, holdDuration, exhaleDuration, cycleCount = 0, phaseCount = 0, totalStartTime = null) {
+    function timer(totalCycles, inhaleDuration, holdDuration, exhaleDuration, cycleCount = 0, phaseCount = 0, totalStartTime = null, isThirumular = false) {
       if (totalStartTime === null) {
         totalStartTime = Date.now();
       }
 
       if (cycleCount < totalCycles) {
         playSound(getSoundFilename(phaseCount));
-        let remainingTime = getPhaseDuration(phaseCount, inhaleDuration, holdDuration, exhaleDuration);
-        updateCountdownTimer(remainingTime, cycleCount, totalCycles, inhaleDuration, holdDuration, exhaleDuration, phaseCount, totalStartTime);
+        let remainingTime = getPhaseDuration(phaseCount, inhaleDuration, holdDuration, exhaleDuration, isThirumular);
+        updateCountdownTimer(remainingTime, cycleCount, totalCycles, inhaleDuration, holdDuration, exhaleDuration, phaseCount, totalStartTime, isThirumular);
       } else {
         playSound("mixkit-airport-announcement-ding-1569.mp3"); // Play the long sound only at the end
         updateTimerLabels("Completed", 0, calculateTotalMinutes(totalStartTime));
       }
     }
 
-    function getPhaseDuration(phaseCount, inhaleDuration, holdDuration, exhaleDuration) {
-      let durations = [inhaleDuration, holdDuration, exhaleDuration, holdDuration];
-      return durations[phaseCount % 4];
+    function getPhaseDuration(phaseCount, inhaleDuration, holdDuration, exhaleDuration, isThirumular) {
+      if (isThirumular) {
+        let durations = [inhaleDuration, holdDuration, exhaleDuration];
+        return durations[phaseCount % 3];
+      } else {
+        let durations = [inhaleDuration, holdDuration, exhaleDuration, holdDuration];
+        return durations[phaseCount % 4];
+      }
     }
 
     function getSoundFilename(phaseCount) {
@@ -132,21 +296,31 @@
       return filenames[phaseCount % 4];
     }
 
+
     function startTimer() {
-      let totalCycles = parseInt(totalCyclesInput.value);
-      let inhaleDuration = parseInt(inhaleInput.value);
-      let holdDuration = parseInt(holdInput.value);
-      let exhaleDuration = parseInt(exhaleInput.value);
-
-      // Reset the timer before starting a new one
       resetTimer();
-
-      timer(totalCycles, inhaleDuration, holdDuration, exhaleDuration);
+      if (modeBox.checked) {
+        // Box Breathing
+        let totalCycles = parseInt(totalCyclesInput.value);
+        let inhaleDuration = parseInt(inhaleInput.value);
+        let holdDuration = parseInt(holdInput.value);
+        let exhaleDuration = parseInt(exhaleInput.value);
+        timer(totalCycles, inhaleDuration, holdDuration, exhaleDuration, 0, 0, null, false);
+      } else {
+        // Thirumalar Breathing
+        let totalCycles = parseInt(totalCyclesThiruInput.value);
+        let inhaleDuration = parseInt(inhaleThiruInput.value);
+        let holdDuration = inhaleDuration * 4;
+        let exhaleDuration = inhaleDuration * 2;
+        timer(totalCycles, inhaleDuration, holdDuration, exhaleDuration, 0, 0, null, true);
+      }
     }
 
     function resetTimer() {
-      // Add reset logic here
+      // Optionally implement reset logic if needed
     }
+    // Initialize Thirumalar values on load
+    updateThiruTimes();
   </script>
 </body>
 </html>
