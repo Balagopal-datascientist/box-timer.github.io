@@ -210,7 +210,7 @@
         <input type="radio" name="mode" id="modeBox" checked onchange="toggleMode()"> Box Breathing
       </label>
       <label>
-        <input type="radio" name="mode" id="modeThirumalar" onchange="toggleMode()"> Thirumalar Breathing
+        <input type="radio" name="mode" id="modeTirumular" onchange="toggleMode()"> Tirumular Breathing
       </label>
     </div>
 
@@ -228,7 +228,7 @@
       <input type="number" id="exhale" placeholder="e.g. 4" />
     </div>
 
-    <div id="thirumalarSection" style="display:none;">
+    <div id="TirumularSection" style="display:none;">
       <label for="cyclesThiru">Number of Cycles:</label>
       <input type="number" id="cyclesThiru" placeholder="e.g. 5" />
 
@@ -281,7 +281,7 @@
     let holdInput = document.getElementById('hold');
     let exhaleInput = document.getElementById('exhale');
 
-    // Elements for Thirumalar Breathing
+    // Elements for Tirumular Breathing
     let totalCyclesThiruInput = document.getElementById('cyclesThiru');
     let inhaleThiruInput = document.getElementById('inhaleThiru');
     let holdThiruLabel = document.getElementById('holdThiruLabel');
@@ -289,9 +289,9 @@
 
     // Mode toggle
     let modeBox = document.getElementById('modeBox');
-    let modeThirumalar = document.getElementById('modeThirumalar');
+    let modeTirumular = document.getElementById('modeTirumular');
     let boxSection = document.getElementById('boxSection');
-    let thirumalarSection = document.getElementById('thirumalarSection');
+    let TirumularSection = document.getElementById('TirumularSection');
 
     let currentPhaseLabel = document.getElementById('currentPhase');
     let remainingTimeLabel = document.getElementById('remainingTime');
@@ -300,10 +300,10 @@
     function toggleMode() {
       if (modeBox.checked) {
         boxSection.style.display = '';
-        thirumalarSection.style.display = 'none';
+        TirumularSection.style.display = 'none';
       } else {
         boxSection.style.display = 'none';
-        thirumalarSection.style.display = '';
+        TirumularSection.style.display = '';
         updateThiruTimes();
       }
     }
@@ -403,7 +403,7 @@
         let exhaleDuration = parseInt(exhaleInput.value);
         timer(totalCycles, inhaleDuration, holdDuration, exhaleDuration, 0, 0, null, false);
       } else {
-        // Thirumalar Breathing
+        // Tirumular Breathing
         let totalCycles = parseInt(totalCyclesThiruInput.value);
         let inhaleDuration = parseInt(inhaleThiruInput.value);
         let holdDuration = inhaleDuration * 4;
@@ -415,7 +415,7 @@
     function resetTimer() {
       // Optionally implement reset logic if needed
     }
-    // Initialize Thirumalar values on load
+    // Initialize Tirumular values on load
     updateThiruTimes();
   </script>
 </body>
