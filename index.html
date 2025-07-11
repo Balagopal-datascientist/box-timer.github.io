@@ -5,31 +5,66 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Breathing Timer App</title>
   <style>
+    :root {
+      --color-bg-light: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+      --color-bg-dark: linear-gradient(135deg, #232946 0%, #16161a 100%);
+      --color-card-light: #fff;
+      --color-card-dark: #232946;
+      --color-text-light: #2d3a4b;
+      --color-text-dark: #eaeaea;
+      --color-label-light: #2d3a4b;
+      --color-label-dark: #eaeaea;
+      --color-input-light: #f7fafc;
+      --color-input-dark: #16161a;
+      --color-border-light: #b0c4de;
+      --color-border-dark: #44475a;
+      --color-shadow-light: #b0c4de44;
+      --color-shadow-dark: #0008;
+      --color-btn-light: linear-gradient(90deg, #4f8cff 0%, #38b6ff 100%);
+      --color-btn-dark: linear-gradient(90deg, #7f9cf5 0%, #38b6ff 100%);
+      --color-btn-hover-light: linear-gradient(90deg, #38b6ff 0%, #4f8cff 100%);
+      --color-btn-hover-dark: linear-gradient(90deg, #38b6ff 0%, #7f9cf5 100%);
+      --color-label-bg-light: #f7fafc;
+      --color-label-bg-dark: #16161a;
+      --color-label-shadow-light: #b0c4de22;
+      --color-label-shadow-dark: #0004;
+    }
+
     body {
       font-family: 'Segoe UI', Arial, sans-serif;
       text-align: center;
       margin: 0;
       padding: 0;
-      background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+      background: var(--color-bg-dark);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
+      transition: background 0.3s;
+    }
+
+    body.light {
+      background: var(--color-bg-light);
     }
 
     h1 {
       margin-top: 32px;
-      color: #2d3a4b;
+      color: var(--color-text-dark);
       letter-spacing: 1px;
       font-size: 2.2rem;
       font-weight: 700;
+      text-shadow: 0 2px 8px #0008;
+      transition: color 0.3s;
+    }
+    body.light h1 {
+      color: var(--color-text-light);
       text-shadow: 0 2px 8px #fff8;
     }
 
     .breath-card {
-      background: #fff;
+      background: var(--color-card-dark);
       border-radius: 18px;
-      box-shadow: 0 4px 24px 0 #b0c4de44;
+      box-shadow: 0 4px 24px 0 var(--color-shadow-dark);
       padding: 28px 20px 20px 20px;
       margin: 24px 0 0 0;
       max-width: 370px;
@@ -37,31 +72,47 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    body.light .breath-card {
+      background: var(--color-card-light);
+      box-shadow: 0 4px 24px 0 var(--color-shadow-light);
     }
 
     label {
       display: block;
       margin: 12px 0 4px 0;
-      color: #2d3a4b;
+      color: var(--color-label-dark);
       font-size: 1.05rem;
       font-weight: 500;
       text-align: left;
+      transition: color 0.3s;
+    }
+    body.light label {
+      color: var(--color-label-light);
     }
 
     input[type="number"] {
       width: 100%;
       max-width: 180px;
       padding: 8px 10px;
-      border: 1px solid #b0c4de;
+      border: 1px solid var(--color-border-dark);
       border-radius: 8px;
       font-size: 1rem;
       margin-bottom: 6px;
-      background: #f7fafc;
+      background: var(--color-input-dark);
+      color: var(--color-text-dark);
       box-sizing: border-box;
+      transition: background 0.3s, color 0.3s, border 0.3s;
+    }
+    body.light input[type="number"] {
+      border: 1px solid var(--color-border-light);
+      background: var(--color-input-light);
+      color: var(--color-text-light);
     }
 
     input[type="radio"] {
-      accent-color: #4f8cff;
+      accent-color: #7f9cf5;
       margin-right: 6px;
     }
 
@@ -78,35 +129,51 @@
       font-size: 1.1rem;
       font-weight: 600;
       color: #fff;
-      background: linear-gradient(90deg, #4f8cff 0%, #38b6ff 100%);
+      background: var(--color-btn-dark);
       border: none;
       border-radius: 8px;
-      box-shadow: 0 2px 8px #4f8cff33;
+      box-shadow: 0 2px 8px #0004;
       cursor: pointer;
       transition: background 0.2s, transform 0.2s;
     }
     button:hover {
-      background: linear-gradient(90deg, #38b6ff 0%, #4f8cff 100%);
+      background: var(--color-btn-hover-dark);
       transform: translateY(-2px) scale(1.03);
+    }
+    body.light button {
+      background: var(--color-btn-light);
+      box-shadow: 0 2px 8px #4f8cff33;
+    }
+    body.light button:hover {
+      background: var(--color-btn-hover-light);
     }
 
     #timerLabels {
       margin-top: 24px;
-      background: #f7fafc;
+      background: var(--color-label-bg-dark);
       border-radius: 12px;
-      box-shadow: 0 1px 4px #b0c4de22;
+      box-shadow: 0 1px 4px var(--color-label-shadow-dark);
       padding: 18px 0 10px 0;
       width: 100%;
       max-width: 320px;
       margin-left: auto;
       margin-right: auto;
+      transition: background 0.3s, box-shadow 0.3s;
     }
     #timerLabels p {
       margin: 8px 0;
       font-size: 1.1rem;
-      color: #2d3a4b;
+      color: var(--color-text-dark);
       font-weight: 500;
       letter-spacing: 0.5px;
+      transition: color 0.3s;
+    }
+    body.light #timerLabels {
+      background: var(--color-label-bg-light);
+      box-shadow: 0 1px 4px var(--color-label-shadow-light);
+    }
+    body.light #timerLabels p {
+      color: var(--color-text-light);
     }
 
     @media (max-width: 600px) {
@@ -132,6 +199,10 @@
 <body>
 
   <h1>Breathing Timer App</h1>
+
+  <div style="width:100%;display:flex;justify-content:center;margin-top:10px;">
+    <button id="toggleDarkMode" style="position:relative;right:0;top:0;z-index:2;min-width:90px;max-width:140px;font-size:0.98rem;padding:7px 18px 7px 18px;box-shadow:0 1px 4px #0002;background:var(--color-btn-dark);color:#fff;border:none;border-radius:7px;transition:background 0.2s;">☾ Dark Mode</button>
+  </div>
 
   <div class="breath-card">
     <div class="mode-select">
@@ -178,6 +249,31 @@
   </div>
 
   <script>
+
+    // Dark mode toggle logic
+    const darkModeBtn = document.getElementById('toggleDarkMode');
+    function setDarkMode(isDark) {
+      if (isDark) {
+        document.body.classList.remove('light');
+        darkModeBtn.textContent = '☾ Dark Mode';
+      } else {
+        document.body.classList.add('light');
+        darkModeBtn.textContent = '☀ Light Mode';
+      }
+      // Save preference
+      localStorage.setItem('breath-timer-darkmode', isDark ? 'dark' : 'light');
+    }
+    // Default to dark mode
+    setDarkMode(true);
+    darkModeBtn.onclick = function() {
+      setDarkMode(document.body.classList.contains('light'));
+    };
+    // On load, check preference
+    window.addEventListener('DOMContentLoaded', function() {
+      const pref = localStorage.getItem('breath-timer-darkmode');
+      if (pref === 'light') setDarkMode(false);
+      else setDarkMode(true);
+    });
 
     // Elements for Box Breathing
     let totalCyclesInput = document.getElementById('cycles');
